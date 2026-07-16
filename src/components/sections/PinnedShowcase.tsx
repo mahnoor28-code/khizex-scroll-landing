@@ -1,17 +1,18 @@
 import React from "react";
+import Phase3TestScene from "../three/Phase3TestScene";
 
 /**
  * PLACEHOLDER for now. This is where the pinned 3D scroll experience
  * will live starting Phase 5 (scroll mapping) through Phase 7 (pinning).
- * For Phase 2, it's just a full-viewport section so the page's overall
- * rhythm (Hero -> big section -> Features -> Ending) is visible and
- * testable before any animation complexity gets added on top.
+ *
+ * Phase 3 note: Phase3TestScene below is a TEMPORARY isolated test — it
+ * gets swapped for the real .glb-driven scene in Phase 4.
  */
 export default function PinnedShowcase(): React.ReactElement {
   return (
     <section className="pinned-showcase" aria-label="Product showcase">
-      <div className="pinned-showcase__placeholder">
-        <p>3D scroll experience goes here (Phase 5+)</p>
+      <div className="pinned-showcase__canvas-wrap">
+        <Phase3TestScene />
       </div>
     </section>
   );
