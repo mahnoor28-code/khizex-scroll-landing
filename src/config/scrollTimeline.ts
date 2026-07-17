@@ -12,14 +12,20 @@ export interface ScrollKeyframe {
   progress: number;
   /** Model rotation around the Y axis, in radians */
   rotationY: number;
+  /** Model vertical position (world units) — adds "lift" to the motion */
+  positionY: number;
   /** Camera distance from the model along Z */
   cameraZ: number;
 }
 
+// Phase 6: 4 keyframes instead of 2 — gives the sequence a deliberate
+// shape (rise, turn further, settle) instead of one flat spin. Every
+// number here lives in ONE place; nothing is hardcoded in components.
 export const PRODUCT_SCROLL_TIMELINE: readonly ScrollKeyframe[] = [
-  { progress: 0, rotationY: 0, cameraZ: 3.2 },
-  { progress: 0.5, rotationY: Math.PI, cameraZ: 2.2 },
-  { progress: 1, rotationY: Math.PI * 2, cameraZ: 3.2 }
+  { progress: 0, rotationY: 0, positionY: 0, cameraZ: 3.2 },
+  { progress: 0.33, rotationY: Math.PI * 0.5, positionY: 0.3, cameraZ: 2.6 },
+  { progress: 0.66, rotationY: Math.PI * 1.5, positionY: -0.2, cameraZ: 2.2 },
+  { progress: 1, rotationY: Math.PI * 2, positionY: 0, cameraZ: 3.2 }
 ];
 
 /**
@@ -39,7 +45,9 @@ export function lerp(start: number, end: number, t: number): number {
  * keyframes — we always compute an in-between value, never jump straight
  * to a keyframe's exact number.
  */
-export function getAnimationStateAt(progress: number): { rotationY: number; cameraZ: number } {
+export function getAnimationStateAt(
+  progress: number
+): { rotationY: number; positionY: number; cameraZ: number } {
   const clamped = Math.min(Math.max(progress, 0), 1);
   const timeline = PRODUCT_SCROLL_TIMELINE;
 
@@ -50,11 +58,12 @@ export function getAnimationStateAt(progress: number): { rotationY: number; came
       const segmentT = (clamped - current.progress) / (next.progress - current.progress);
       return {
         rotationY: lerp(current.rotationY, next.rotationY, segmentT),
+        positionY: lerp(current.positionY, next.positionY, segmentT),
         cameraZ: lerp(current.cameraZ, next.cameraZ, segmentT)
       };
     }
   }
 
   const last = timeline[timeline.length - 1];
-  return { rotationY: last.rotationY, cameraZ: last.cameraZ };
+  return { rotationY: last.rotationY, positionY: last.positionY, cameraZ: last.cameraZ };
 }

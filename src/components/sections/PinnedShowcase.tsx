@@ -1,19 +1,24 @@
-import React from "react";
-import Phase4ProductScene from "../three/Phase4ProductScene";
+import React, { useRef } from "react";
+import Phase6ProductScene from "../three/Phase6ProductScene";
+import { useScrollProgress } from "../../hooks/useScrollProgress";
 
 /**
- * PLACEHOLDER for now. This is where the pinned 3D scroll experience
- * will live starting Phase 5 (scroll mapping) through Phase 7 (pinning).
- *
- * Phase 4: now rendering the real .glb model, still with OrbitControls
- * for manual testing — OrbitControls comes OUT in Phase 5 once scroll
- * takes over camera control.
+ * Phase 6: model now animates rotation + vertical position + camera
+ * distance together, across 4 keyframes instead of 2 — see
+ * src/config/scrollTimeline.ts for the full sequence.
  */
 export default function PinnedShowcase(): React.ReactElement {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const progressRef = useScrollProgress(sectionRef as React.RefObject<HTMLElement>);
+
   return (
-    <section className="pinned-showcase" aria-label="Product showcase">
+    <section
+      className="pinned-showcase"
+      aria-label="Product showcase"
+      ref={sectionRef as React.RefObject<HTMLElement>}
+    >
       <div className="pinned-showcase__canvas-wrap">
-        <Phase4ProductScene />
+        <Phase6ProductScene progressRef={progressRef} />
       </div>
     </section>
   );
