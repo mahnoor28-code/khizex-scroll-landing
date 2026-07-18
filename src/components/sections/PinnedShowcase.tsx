@@ -4,19 +4,20 @@ import NarrativeText from "./NarrativeText";
 
 // Lazy-loaded: the Three.js/R3F/GSAP-scene bundle only downloads once
 // this section is actually needed, never blocking the Hero's initial
-// paint (LCP). See the production build output — Phase9ProductScene
+// paint (LCP). See the production build output — Phase11ProductScene
 // ships as its own separate chunk from the main bundle.
-const Phase9ProductScene = lazy(() => import("../three/Phase9ProductScene"));
+const Phase11ProductScene = lazy(() => import("../three/Phase11ProductScene"));
 
 /**
- * Phase 9: performance pass.
- *  - The 3D scene component itself is lazy-loaded (see import above).
- *  - It isn't even MOUNTED until this section first scrolls into view
- *    (via IntersectionObserver) — so scrolling past it on a fast flick
- *    never triggers the model download at all.
- *  - Once mounted, `isVisible` toggles the render loop on/off (passed
- *    as `active` to Phase9ProductScene) so a canvas that's scrolled
- *    fully out of view stops rendering frames entirely.
+ * Phase 11: responsive pass.
+ *  - Smaller screens get a shorter pin duration (150vh vs 200vh) — the
+ *    same animation, just less scroll distance required to complete it,
+ *    since mobile users typically scroll in shorter, faster gestures.
+ *  - Touch scroll and window resize both already work correctly here
+ *    without extra code: Lenis leaves touch input native (see
+ *    useLenis.ts), and ScrollTrigger's `invalidateOnRefresh: true`
+ *    (set in useScrollProgress.ts, Phase 7) recalculates pin boundaries
+ *    automatically whenever the window resizes or the device rotates.
  */
 export default function PinnedShowcase(): React.ReactElement {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -25,7 +26,7 @@ export default function PinnedShowcase(): React.ReactElement {
 
   const progressRef = useScrollProgress(sectionRef as React.RefObject<HTMLElement>, {
     pin: true,
-    pinDurationVh: 200
+    pinDurationVh: window.innerWidth < 768 ? 150 : 200
   });
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function PinnedShowcase(): React.ReactElement {
       <div className="pinned-showcase__canvas-wrap">
         {hasBeenVisible ? (
           <Suspense fallback={<div className="pinned-showcase__loading">Loading experience…</div>}>
-            <Phase9ProductScene progressRef={progressRef} active={isVisible} />
+            <Phase11ProductScene progressRef={progressRef} active={isVisible} />
           </Suspense>
         ) : null}
       </div>

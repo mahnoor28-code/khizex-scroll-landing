@@ -88,6 +88,16 @@ body {
      from JS (tied to scroll progress), a CSS transition would fight it. */
 }
 
+@media (max-width: 480px) {
+  .narrative-text {
+    padding: 1.25rem;
+  }
+  .narrative-text__line {
+    max-width: 90vw;
+    font-size: clamp(1.25rem, 6vw, 2rem);
+  }
+}
+
 .features {
   padding: 6rem 2rem;
   max-width: 900px;
