@@ -1,15 +1,19 @@
 import React, { useRef } from "react";
 import Phase6ProductScene from "../three/Phase6ProductScene";
 import { useScrollProgress } from "../../hooks/useScrollProgress";
+import NarrativeText from "./NarrativeText";
 
 /**
- * Phase 6: model now animates rotation + vertical position + camera
- * distance together, across 4 keyframes instead of 2 — see
- * src/config/scrollTimeline.ts for the full sequence.
+ * Phase 8: narrative text now overlays the 3D canvas, fading in/out at
+ * specific scroll-progress points (see src/config/narrativeReveals.ts) —
+ * not just "appears when scrolled into view."
  */
 export default function PinnedShowcase(): React.ReactElement {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const progressRef = useScrollProgress(sectionRef as React.RefObject<HTMLElement>);
+  const progressRef = useScrollProgress(sectionRef as React.RefObject<HTMLElement>, {
+    pin: true,
+    pinDurationVh: 200
+  });
 
   return (
     <section
@@ -20,6 +24,7 @@ export default function PinnedShowcase(): React.ReactElement {
       <div className="pinned-showcase__canvas-wrap">
         <Phase6ProductScene progressRef={progressRef} />
       </div>
+      <NarrativeText progressRef={progressRef} />
     </section>
   );
 }
