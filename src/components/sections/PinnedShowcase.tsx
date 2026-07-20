@@ -1,6 +1,8 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useScrollProgress } from "../../hooks/useScrollProgress";
+import { useReducedExperience } from "../../hooks/useReducedExperience";
 import NarrativeText from "./NarrativeText";
+import StaticShowcase from "./StaticShowcase";
 
 // Lazy-loaded: the Three.js/R3F/GSAP-scene bundle only downloads once
 // this section is actually needed, never blocking the Hero's initial
@@ -9,17 +11,24 @@ import NarrativeText from "./NarrativeText";
 const Phase11ProductScene = lazy(() => import("../three/Phase11ProductScene"));
 
 /**
- * Phase 11: responsive pass.
- *  - Smaller screens get a shorter pin duration (150vh vs 200vh) — the
- *    same animation, just less scroll distance required to complete it,
- *    since mobile users typically scroll in shorter, faster gestures.
- *  - Touch scroll and window resize both already work correctly here
- *    without extra code: Lenis leaves touch input native (see
- *    useLenis.ts), and ScrollTrigger's `invalidateOnRefresh: true`
- *    (set in useScrollProgress.ts, Phase 7) recalculates pin boundaries
- *    automatically whenever the window resizes or the device rotates.
+ * Phase 12: this component now has two completely separate render
+ * paths. `useReducedExperience()` is checked FIRST, before any
+ * ScrollTrigger/pin/Canvas setup even happens — a no-WebGL or
+ * reduced-motion visitor never triggers the 3D bundle download, never
+ * gets a pinned section, never runs GSAP scrub logic. They get
+ * <StaticShowcase>, plain and simple.
  */
 export default function PinnedShowcase(): React.ReactElement {
+  const reducedExperience = useReducedExperience();
+
+  if (reducedExperience) {
+    return <StaticShowcase />;
+  }
+
+  return <FullScrollExperience />;
+}
+
+function FullScrollExperience(): React.ReactElement {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);

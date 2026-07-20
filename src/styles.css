@@ -68,7 +68,7 @@ body {
   top: 0;
   width: 100%;
   height: 100vh;
-  margin-top: -100vh; /* stack directly on top of canvas-wrap, same sticky slot */
+  margin-top: -100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,8 +84,6 @@ body {
   font-weight: 600;
   margin: 0;
   opacity: 0;
-  /* No CSS transition here on purpose — opacity is driven every frame
-     from JS (tied to scroll progress), a CSS transition would fight it. */
 }
 
 @media (max-width: 480px) {
@@ -96,6 +94,29 @@ body {
     max-width: 90vw;
     font-size: clamp(1.25rem, 6vw, 2rem);
   }
+}
+
+.static-showcase {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 3rem 2rem;
+  background: #161616;
+  text-align: center;
+}
+
+.static-showcase__image {
+  width: 100%;
+  max-width: 380px;
+}
+
+.static-showcase__text p {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
 }
 
 .features {

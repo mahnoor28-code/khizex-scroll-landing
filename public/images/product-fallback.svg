@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <rect width="500" height="500" fill="#161616"/>
+  <rect x="210" y="90" width="80" height="60" rx="10" fill="#2c2c2c"/>
+  <circle cx="250" cy="250" r="85" fill="#e8622c" opacity="0.15"/>
+  <circle cx="250" cy="250" r="70" fill="#1f1f1f" stroke="#e8622c" stroke-width="4"/>
+  <rect x="220" y="330" width="60" height="130" rx="14" fill="#2c2c2c"/>
+  <text x="250" y="470" fill="#6a6660" font-family="sans-serif" font-size="14" text-anchor="middle">Product preview (static)</text>
+</svg>
