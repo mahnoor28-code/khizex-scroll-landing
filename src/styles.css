@@ -13,6 +13,34 @@ body {
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: #e8622c;
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* Explicit, high-contrast focus ring for every keyboard-reachable
+   control — never rely on the browser default alone, since some
+   reset/CSS combos accidentally suppress it. */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #e8622c;
+  outline-offset: 3px;
+}
+
 .hero {
   min-height: 100vh;
   display: flex;
